@@ -3,6 +3,10 @@
 import 'package:flutter/material.dart';
 import '../models/producto.dart';
 import '../screens/producto_detalle_screen.dart'; // Importacion de la nueva pantalla
+import '../providers/carrito_provider.dart';
+import 'package:provider/provider.dart';
+
+
 
 class ProductoCard extends StatelessWidget {
   final Producto producto;
@@ -22,6 +26,27 @@ class ProductoCard extends StatelessWidget {
           ),
         );
       },
+
+      onLongPress: () async {
+    final provider = Provider.of<CarritoProvider>(context, listen: false);
+    try {
+      await provider.agregarProducto(producto, 1);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${producto.nombre} agregado al carrito')),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
+  },
+
+
+
+
+
       child: Container(
         // CONTAINER: Widget para decoración y dimensiones
         decoration: BoxDecoration(
