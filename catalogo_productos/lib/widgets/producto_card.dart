@@ -109,17 +109,33 @@ Widget build(BuildContext context) {
                         ),
                         // ROW: Organiza widgets horizontalmente
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '\$${producto.precio.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.green,
-                              ),
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '\$${producto.precio.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.green,
                             ),
-                            Container(
+                          ),
+                          GestureDetector( // <-- Envuelve el botón con GestureDetector
+                            onTap: () async {
+                              final provider = Provider.of<CarritoProvider>(context, listen: false);
+                              try {
+                                await provider.agregarProducto(producto, 1);
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('${producto.nombre} agregado al carrito')),
+                                );
+                              } catch (e) {
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(e.toString())),
+                                );
+                              }
+                            },
+                            child: Container(
                               padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                 color: Colors.blue,
@@ -131,8 +147,9 @@ Widget build(BuildContext context) {
                                 size: 18,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
                       ],
                     ),
                   ),
