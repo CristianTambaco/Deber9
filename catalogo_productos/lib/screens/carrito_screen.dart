@@ -263,7 +263,7 @@ class _CarritoScreenState extends State<CarritoScreen> {
   }
 }
 
-// Clase para mostrar un ítem del carrito (no necesita cambios)
+// Clase para mostrar un ítem del carrito 
 class _CarritoItemWidget extends StatelessWidget {
   final CarritoItem item;
 
