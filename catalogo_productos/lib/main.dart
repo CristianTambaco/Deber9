@@ -1,7 +1,9 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 import 'providers/carrito_provider.dart';
+import 'widgets/loading_overlay.dart'; // Asegúrate de tener este archivo
 
 void main() {
   runApp(
@@ -24,7 +26,14 @@ class MiApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: Consumer<CarritoProvider>(
+        builder: (context, carrito, child) {
+          return LoadingOverlay(
+            isLoading: carrito.isLoading,
+            child: const HomeScreen(),
+          );
+        },
+      ),
     );
   }
 }
