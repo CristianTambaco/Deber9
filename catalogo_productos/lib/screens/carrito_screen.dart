@@ -4,6 +4,8 @@ import '../providers/carrito_provider.dart';
 import '../models/carrito_item.dart';
 import '../widgets/loading_overlay.dart'; // Importa el overlay
 import '../models/producto.dart'; // Importa los productos
+import '../widgets/cantidad_selector.dart';
+
 
 class CarritoScreen extends StatefulWidget {
   const CarritoScreen({super.key});
@@ -160,19 +162,16 @@ class _CarritoScreenState extends State<CarritoScreen> {
                 ),
               ),
               const SizedBox(width: 16),
-              // Campo para la cantidad
-              SizedBox(
-                width: 80,
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Cantidad',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                  initialValue: '1',
-                  onChanged: (value) {
+              // Selector de cantidad
+              Container(
+                width: 100,
+                child: CantidadSelector(
+                  valorInicial: 1,
+                  minimo: 1,
+                  maximo: 10,
+                  onChanged: (nuevaCantidad) {
                     setState(() {
-                      cantidad = int.tryParse(value) ?? 1;
+                      cantidad = nuevaCantidad;
                     });
                   },
                 ),
