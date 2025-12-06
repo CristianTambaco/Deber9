@@ -124,66 +124,79 @@ class _CarritoScreenState extends State<CarritoScreen> {
   // Método privado para construir la sección de selección de productos
   // Ahora puedes usar setState en estos métodos
   Widget _buildSeleccionarProductos(BuildContext context, CarritoProvider carrito) {
-    final List<Producto> productosDisponibles = productosEjemplo;
+  final List<Producto> productosDisponibles = productosEjemplo;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(bottom: BorderSide(color: Colors.grey[300]!)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Seleccionar Productos',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+  return Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      border: Border(bottom: BorderSide(color: Colors.grey[300]!)),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Seleccionar Productos',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              // Dropdown para seleccionar el producto
-              Expanded(
-                child: DropdownButtonFormField<Producto>(
-                  decoration: InputDecoration(
-                    labelText: 'Producto',
-                    border: OutlineInputBorder(),
-                  ),
-                  value: productoSeleccionado,
-                  onChanged: (value) {
-                    setState(() {
-                      productoSeleccionado = value;
-                    });
-                  },
-                  items: productosDisponibles.map((producto) {
-                    return DropdownMenuItem<Producto>(
-                      value: producto,
-                      child: Text('${producto.nombre} - \$${producto.precio.toStringAsFixed(2)}'),
-                    );
-                  }).toList(),
-                ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            // Dropdown para seleccionar el producto
+            // Dropdown para seleccionar el producto
+Expanded(
+  flex: 3,
+  child: SizedBox(
+    width: 200, // Fuerza un ancho específico
+    child: DropdownButtonFormField<Producto>(
+      isExpanded: true, // Hace que el dropdown ocupe todo el ancho disponible
+      decoration: InputDecoration(
+        labelText: 'Producto',
+        border: OutlineInputBorder(),
+      ),
+      value: productoSeleccionado,
+      onChanged: (value) {
+        setState(() {
+          productoSeleccionado = value;
+        });
+      },
+      items: productosDisponibles.map((producto) {
+        return DropdownMenuItem<Producto>(
+          value: producto,
+          child: Text(
+            '${producto.nombre} - \$${producto.precio.toStringAsFixed(2)}',
+            overflow: TextOverflow.ellipsis, // Truncar texto si es muy largo
+            maxLines: 1,
+            style: const TextStyle(fontSize: 14), // Tamaño de fuente más pequeño
+          ),
+        );
+      }).toList(),
+    ),
+  ),
+),
+            const SizedBox(width: 16),
+            // Selector de cantidad
+            Expanded(
+              flex: 1,
+              child: CantidadSelector(
+                valorInicial: 1,
+                minimo: 1,
+                maximo: 10,
+                onChanged: (nuevaCantidad) {
+                  setState(() {
+                    cantidad = nuevaCantidad;
+                  });
+                },
               ),
-              const SizedBox(width: 16),
-              // Selector de cantidad
-              Container(
-                width: 100,
-                child: CantidadSelector(
-                  valorInicial: 1,
-                  minimo: 1,
-                  maximo: 10,
-                  onChanged: (nuevaCantidad) {
-                    setState(() {
-                      cantidad = nuevaCantidad;
-                    });
-                  },
-                ),
-              ),
-              const SizedBox(width: 16),
-              // Botón para agregar al carrito
-              ElevatedButton.icon(
+            ),
+            const SizedBox(width: 16),
+            // Botón para agregar al carrito
+            Expanded(
+              flex: 2,
+              child: ElevatedButton.icon(
                 onPressed: productoSeleccionado != null && cantidad > 0
                     ? () async {
                         try {
@@ -208,12 +221,13 @@ class _CarritoScreenState extends State<CarritoScreen> {
                 icon: const Icon(Icons.add_shopping_cart),
                 label: const Text('Agregar al Carrito'),
               ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 
   // Método privado para construir los totales
   Widget _buildTotales(BuildContext context, Map<String, double> totales) {
