@@ -1,4 +1,3 @@
-
 // lib/widgets/cantidad_selector.dart
 import 'package:flutter/material.dart';
 
@@ -52,24 +51,33 @@ class _CantidadSelectorState extends State<CantidadSelector> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        IconButton(
-          onPressed: _decrementar,
-          icon: const Icon(Icons.remove),
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
-        ),
-        // Envuelve el contenedor del número con Expanded para que ocupe el espacio disponible
+        // Botón de decremento
         Expanded(
+          flex: 1,
+          child: IconButton(
+            onPressed: _decrementar,
+            icon: const Icon(Icons.remove),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
+        ),
+        // Contenedor del número
+        Expanded(
+          flex: 2,
           child: Container(
             alignment: Alignment.center,
             child: Text('$_cantidad'),
           ),
         ),
-        IconButton(
-          onPressed: _incrementar,
-          icon: const Icon(Icons.add),
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(),
+        // Botón de incremento
+        Expanded(
+          flex: 1,
+          child: IconButton(
+            onPressed: _incrementar,
+            icon: const Icon(Icons.add),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+          ),
         ),
       ],
     );
