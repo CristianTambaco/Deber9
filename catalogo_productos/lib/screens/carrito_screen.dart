@@ -71,17 +71,21 @@ class _CarritoScreenState extends State<CarritoScreen> {
               ),
           ],
         ),
-        body: Column(
+        body: SingleChildScrollView(
+        child: Column(
           children: [
             // --- NUEVA SECCIÓN: SELECCIONAR PRODUCTOS ---
             _buildSeleccionarProductos(context, carrito),
             // --- FIN DE LA NUEVA SECCIÓN ---
 
             // Lista de productos en el carrito
-            Expanded(
+            Container(
+              height: 300, // Opcional: puedes darle una altura fija o usar Expanded si lo prefieres
               child: carrito.items.isEmpty
                   ? const Center(child: Text('El carrito está vacío'))
                   : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: carrito.items.length,
                       itemBuilder: (context, index) {
                         final item = carrito.items[index];
@@ -112,6 +116,7 @@ class _CarritoScreenState extends State<CarritoScreen> {
             const SizedBox(height: 16),
           ],
         ),
+      ),
       ),
     );
   }
